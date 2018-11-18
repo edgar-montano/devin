@@ -64,7 +64,7 @@ const ProfileSchema = new Schema({
       }
     }
   ],
-  education : [
+  education: [
     {
       school: {
         type: String,
@@ -95,24 +95,23 @@ const ProfileSchema = new Schema({
     }
   ],
   social: {
-      youtube: {
-          type: String
-      }
-      twitter: {
-          type: String
-      }
-      linkedin: {
-          type: String
-      }
-      instagram: {
-          type: String
-      }
+    youtube: {
+      type: String
+    },
+    twitter: {
+      type: String
+    },
+    linkedin: {
+      type: String
+    },
+    instagram: {
+      type: String
+    }
   },
   date: {
-      type: Date,
-      default: Date.now
+    type: Date,
+    default: Date.now
   }
 });
 
-
-module.exports = Profile = mongoose.model('profile', ProfileSchema);
+module.exports = Profile = mongoose.model("profile", ProfileSchema);
