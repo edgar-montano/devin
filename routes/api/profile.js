@@ -9,6 +9,8 @@ const User = require("../../models/User");
 
 //validation import
 const validateProfileInupt = require("../../validation/profile");
+const validateExperienceInupt = require("../../validation/experience");
+const validateEducationInupt = require("../../validation/education");
 
 // @route       GET api/profile/test
 // @desc        Test post route
@@ -154,6 +156,75 @@ router.post(
           new Profile(profileFields).save().then(profile => res.json(profile));
         });
       }
+    });
+  }
+);
+
+// @route       Post api/profile/experience
+// @desc        Add experience to prpfile
+// @access      private
+router.post(
+  "/experience",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    //validate experience input
+    const { errors, isValid } = validateExperienceInupt(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+    //search for user profile and create a new experience to push to profile
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newExperience = {
+        title: req.body.title,
+        company: req.body.company,
+        location: req.body.location,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description
+      };
+      //add to experience array
+      //use unshift to add experience to top
+      profile.experience.unshift(newExperience);
+      profile
+        .save()
+        .then(profile => res.json(profile))
+        .catch(err => res.status(404).json(err));
+    });
+  }
+);
+
+// @route       Post api/profile/education
+// @desc        Add education to prpfile
+// @access      private
+router.post(
+  "/education",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    //validate experience input
+    const { errors, isValid } = validateEducationInupt(req.body);
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    //search for user profile and create a new education to push to profile
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newEducation = {
+        school: req.body.school,
+        degree: req.body.degree,
+        fieldofstudy: req.body.fieldofstudy,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description
+      };
+      //add to experience array
+      //use unshift to add experience to top
+      profile.education.unshift(newEducation);
+      profile
+        .save()
+        .then(profile => res.json(profile))
+        .catch(err => res.status(404).json(err));
     });
   }
 );
