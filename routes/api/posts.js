@@ -63,7 +63,7 @@ router.delete(
       Post.findById(req.params.id)
         .then(post => {
           if (post.user.toString() !== req.user.id) {
-            console.log(`${post.user.toString()} is not ${req.user.id}`);
+            //console.log(`${post.user.toString()} is not ${req.user.id}`);
             return res
               .status(401)
               .json({ notauthorized: "User not authorized" });
