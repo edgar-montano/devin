@@ -1,11 +1,12 @@
-#DevIn
+# DevIn
 
 A Developer's Social Network built on a MERN stack.
 
-##Setup
+## Setup
 
 
 After installing the front end you can run the npm client-install script to install react's dependencies
+
 ```
 npm run client-install
 ```
