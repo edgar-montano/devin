@@ -25,9 +25,13 @@ router.get("/test", (req, res) =>
 // @desc        Test post route
 // @access      public
 router.post("/register", (req, res) => {
+  //console.log(req.body);
   const { errors, isValid } = validateRegisterInput(req.body);
   //check if input is valid
   if (!isValid) {
+    console.log(
+      `The req body for this route /register is ${req.body.password2}`
+    );
     return res.status(400).json(errors);
   }
 
@@ -46,7 +50,8 @@ router.post("/register", (req, res) => {
         name: req.body.name,
         email: req.body.email,
         avatar,
-        password: req.body.password
+        password: req.body.password,
+        password2: req.body.password2
       });
 
       // encrypt the password with bcrypt
