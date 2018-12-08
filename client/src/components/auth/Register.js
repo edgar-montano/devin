@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import axios from "axios";
 import classnames from "classnames";
-import { error } from "util";
+//import { error } from "util";
+import { connect } from "react-redux";
+import { registerUser } from "../../actions/authActions";
+import PropTypes from "prop-types";
 
 class Register extends Component {
   constructor() {
@@ -17,12 +19,20 @@ class Register extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  //receive errors from redux state
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
+  // Used for updating form data
   onChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
-
+  // create a new user and attempt to submit to mongo
   onSubmit(e) {
     e.preventDefault();
 
@@ -33,15 +43,12 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    //this is used as as a place holder until redux is implemented
-    axios
-      .post("/api/users/register", newUser)
-      .then(res => console.log(res.data))
-      .catch(err => this.setState({ errors: err.response.data }));
+    this.props.registerUser(newUser);
   }
 
   render() {
     const { errors } = this.state;
+
     return (
       <div className="register">
         <div className="container">
@@ -125,4 +132,18 @@ class Register extends Component {
   }
 }
 
-export default Register;
+Register.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(Register);
