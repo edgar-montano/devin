@@ -4,6 +4,7 @@ import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
 
 class Landing extends Component {
+  //redirect user to dashboard instead of landing page
   componentDidMount = () => {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/dashboard");
